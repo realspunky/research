@@ -7,10 +7,12 @@ from gkr_utils import (
     log2, hash as _hash
 )
 
+ROUND_COUNT = 32
+
 # This file does a simple GKR for a simple version of Poseidon:
 # X -> MX ** 3 + i, where M is multiplication by the round matrix
 def permutation(values):
-    for i in range(64):
+    for i in range(ROUND_COUNT):
         values = matmul_layer(values)**3 + i
     return values
 
@@ -21,7 +23,7 @@ def hash(*inputs):
 def gkr_prove(values):
     layers = [values]
     post_matmul_layers = []
-    for i in range(64):
+    for i in range(ROUND_COUNT):
         post_matmul_layers.append(matmul_layer(layers[-1]))
         layers.append(post_matmul_layers[-1] ** 3 + i)
     randomness = hash(layers[-1], values)
@@ -29,7 +31,7 @@ def gkr_prove(values):
     proof = []
     Z_top = koalabear.ExtendedKoalaBear.sum(layers[-1] * weights, axis=0)
     Z = Z_top
-    for i in range(63, -1, -1):
+    for i in range(ROUND_COUNT-1, -1, -1):
         # Going in, we have an "obligation" to prove that
         # weights * (V**3 + i) sums to Z, initially Z_top
         V = post_matmul_layers[i]
@@ -58,8 +60,8 @@ def gkr_verify(values, outputs, Z_top, proof):
     Z = Z_top
     prev_p = None
     # Walk through the layers backwards, and verify each proof
-    for i, (c0, c1, c2, c3, c4, p, V_p) in zip(range(63, -1, -1), proof):
-        if i == 63:
+    for i, (c0, c1, c2, c3, c4, p, V_p) in zip(range(ROUND_COUNT-1, -1, -1), proof):
+        if i == ROUND_COUNT-1:
             W_p = chi_eval(weight_seed_coords, p)
         else:
             W_p = fast_point_eval(prev_p, p)
@@ -86,7 +88,7 @@ def test():
     eval2 = chi_eval(coord1, coord2)
     assert eval1 == eval2
     print("Chi polynomial tests passed")
-    values = koalabear.KoalaBear(list(range(8192)))
+    values = koalabear.KoalaBear(list(range(65536)))
     t1 = time.time()
     outputs = permutation(values)
     print("Raw execution time:", time.time() - t1)
