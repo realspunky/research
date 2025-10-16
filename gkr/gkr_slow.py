@@ -60,7 +60,8 @@ def gkr_verify(values, outputs, Z_top, proof):
     Z = Z_top
     prev_p = None
     # Walk through the layers backwards, and verify each proof
-    for i, (c0, c1, c2, c3, c4, p, V_p) in zip(range(ROUND_COUNT-1, -1, -1), proof):
+    for i, (c0, c1, c2, c3, c4, p, V_p) in \
+            zip(range(ROUND_COUNT-1, -1, -1), proof):
         if i == ROUND_COUNT-1:
             W_p = chi_eval(weight_seed_coords, p)
         else:

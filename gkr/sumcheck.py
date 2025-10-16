@@ -104,11 +104,16 @@ def test():
                 p *= 37
         return koalabear.KoalaBear(o)
 
-    eval_point = koalabear.ExtendedKoalaBear([[2,7,18,28], [18,28,45,90], [45,23,53,60], [2,8,7,5]])
-    W = koalabear.KoalaBear([3, 14, 15, 92, 65, 35, 89, 79, 32, 38, 46, 26, 43, 38, 32, 7950])
-    V = koalabear.KoalaBear([2, 7,  18, 28, 18, 28, 45, 90, 45, 23, 53, 60,  2,  8,  7,    5])
+    eval_point = koalabear.ExtendedKoalaBear(
+        [[2,7,18,28], [18,28,45,90], [45,23,53,60], [2,8,7,5]]
+    )
+    W = koalabear.KoalaBear(
+        [3, 14, 15, 92, 65, 35, 89, 79, 32, 38, 46, 26, 43, 38, 32, 7950]
+    )
+    V = koalabear.KoalaBear(
+        [2, 7,  18, 28, 18, 28, 45, 90, 45, 23, 53, 60,  2,  8,  7,    5]
+    )
     k = 63
-    # V = koalabear.KoalaBear([1,1,1,1, 1,1,1,1, 1,1,1,1, 1,1,1,1])
     total = W.__class__.sum(W * V, axis=0)
     c0, c1, c2, c3, c4, coords, W_value, V_value = sumcheck_prove(W, V, 0, k, hash(W, V), hash)
     value = W_value * (V_value ** 3 + k)
