@@ -1,5 +1,5 @@
 from zorch import koalabear
-from sumcheck import sumcheck_prove, sumcheck_verify
+from slow_sumcheck import sumcheck_prove, sumcheck_verify
 import time
 from gkr_utils import (
     M, matmul_layer, chi_weights, mle_eval, chi_eval, compute_weights,

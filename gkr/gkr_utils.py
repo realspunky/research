@@ -17,7 +17,7 @@ U = koalabear.KoalaBear([[256, 2130673793, 1370880, 2102489153, 338607360, 16541
 
 assert koalabear.matmul(U, M) == koalabear.KoalaBear([[1 if i==j else 0 for i in range(16)] for j in range(16)])
 
-SHA256_OVERRIDE = False
+SHA256_OVERRIDE = True
 
 # We store state in our GKR protocol in 1D. Here, we reshape it so [i,j]
 # is the j'th wire of the i'th hash, then multiply it by the matrix, then
